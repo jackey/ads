@@ -1,4 +1,3 @@
 ad
 ==
-
-ad servers for winform
+广告平台
