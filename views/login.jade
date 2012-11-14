@@ -3,14 +3,23 @@ extends layout
 block content
 	.container
 		.row
-			.span4
-				h2.
-					xx系统广告后台管理
-			.span8.
-				<empty>
-		.row
-			.span3
-				include misc/left
-			.span9
-				form
-					input(type="text", placehodler="user login")
+			.span12
+				form.form-horizontal
+					.control-group
+						label.control-label(for="username")
+							用户名
+						.controls
+							input(type="text", name="username", placehoder="您的用户名")
+					.control-group
+						label.control-label(for="password")
+							密码
+						.controls
+							input(type="password", name="password")
+					.control-group
+						.controls
+							label.checkbox
+								input(type="checkbox")
+								下次自动登陆
+							button.btn(type="submit")
+								登陆
+

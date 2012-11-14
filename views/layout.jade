@@ -1,9 +1,13 @@
 doctype 5
 html
-  head
-    title= title
-    include misc/header
-  body
-    block content 
+	head
+		title= title
+		include misc/header
 
-    include misc/footer
+	body
+		include misc/content_header
+
+		block content
+
+		include misc/content_footer
+
