@@ -3,6 +3,6 @@
  * GET home page.
  */
 
-exports.index = function(req, res){
-  res.render('index', { title: '广告系统' });
-};
+module.exports = function (req, res) {
+	res.render('index', {title: '广告系统'});
+}
