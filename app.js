@@ -30,10 +30,18 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+// Get.
 for (var path in config.routes) {
   var controller = config.routes[path];
   var loaded_control = require("./routes/"+controller);
-  app.get("/"+path, loaded_control)
+  app.get("/"+path, loaded_control);
+}
+
+// Post.
+for (var path in config.post) {
+  var controller = config.post[path];
+  var loaded_control = require('./routes/' + controller);
+  app.post("/" + path, loaded_control);
 }
 
 // app.get('/', routes.index);
