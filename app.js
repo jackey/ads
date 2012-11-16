@@ -23,6 +23,7 @@ app.configure(function(){
   app.use(express.session());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, '.')));
 });
 
 app.configure('development', function(){
