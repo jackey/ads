@@ -1,9 +1,12 @@
-extends layout
+doctype 5
+html
+	head
+		title= title
+		include misc/header
 
-block content
-	div#header
-		div.left
-			h1.header-title XX广告系统
-		div.right
-			h2.header-description 技术联系:jziwenchen@gmail.com
-	div#content
+	body
+		div.margintop145.row
+			div.span6.offset5
+				include login_form
+		include misc/content_footer
+
