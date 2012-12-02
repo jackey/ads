@@ -1,13 +1,22 @@
-var mongo_config = require('../config').mongo;
-var mongoose = require('mongoose');
-	mongoose.connect('mongodb://' + mongo_config.host + '/' + mongo_config.db);
+// User Model.
+
+//用户角色是固定的
+global.ENTERPRISE_ROLE = 1; // 合作厂家
+global.DEALER_ROLE = 2; //经销商 
+global.SELF_COMPANY_ROLE = 3; //本公司
+global.ADMINISTRATOR = 4; // 管理员
+global.OP = 5; //操作员
+
+
+var mongoose = require('mongoose'),
+	_ = require('underscore');
 
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+var ObjectId = Schema.Types.ObjectId;
 
 var User = new Schema({
 	uid: ObjectId,
-	name: {
+	username: {
 		type: String,
 		required: true
 	},
@@ -15,25 +24,43 @@ var User = new Schema({
 		type:String,
 		required: true
 	},
-	province: {
-		prv_id: {
-			type: Number,
-			required: true,	
-		},
-		name: String
+	created: {
+		type: Date,
+		required: true,
+		default: Date.now
 	},
-	City: {
-		cty_id: {
-			type: Number,
-			required:true
-		},
-		name: {
-			type: String,
-			required: true,
-		}
+	updated: {
+		type: Date,
+		required: true,
+		default: Date.now
 	},
+	type_role: {
+		type: Number,
+		required: true,
+	},
+	op_role: {
+		type: Number,
+		required: true,
+	},
+	province_id: {
+		type: Number,
+		required: true,
+	},
+	city_id: {
+		type: Number,
+		required: true
+	}
 });
 
-mongoose.model('User', User);
+User.statics.getUserByName = function (name, cb) {
+	if (_.isUndefined(name) || _.isFunction(name)) {
+		throw "miss param";
+	}
+	else {
+		this.find({username: name}, cb);
+	}
+}
 
-module.exports.User = mongoose.model('User');
+module.exports = function (connect) {
+	return mongoose.model('User', User);
+}

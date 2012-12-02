@@ -1,0 +1,64 @@
+extends layout
+
+block content
+	.container
+		.row
+			.span3
+				include misc/left
+			.span6
+				form.form-horizontal(action="/add_user", method="post", id="add_user_form")
+					.control-group
+						label.control-label(for="username")
+							用户名
+						.controls
+							input.easyui-validatebox(type="text",
+								name="username", 
+								placehoder="用户名", 
+								data-options="required:true")
+					.control-group
+						label.control-label
+							密码
+						.controls
+							input.easyui-validatebox(type="password",
+							id="password",
+							name="password",
+							data-options="required:true")
+					.control-group
+						label.control-label
+							重复密码
+						.controls
+							input.easyui-validatebox(type="password", 
+								name="repassword",
+								data-options="required:true",
+								validType="equals['#password']")
+					.control-group
+						label.control-label
+							省市
+						.controls
+							select.input-small(name="province", id="province_option")
+								each province in provinces
+									option(value="#{province.no}")
+										| #{province.name}
+							
+							select.input-small(name="city", id="city_option")
+					.control-group
+						label.control-label
+							账户类型
+						.controls
+							select.input-small(name="type_role")
+								each role_id, role_name in type_role
+									option(value="#{role_id}")
+										| #{role_name}
+					.control-group
+						label.control-label
+							权限类型
+						.controls
+							select.input-small(name="op_role")
+								each op_id, op_name in op_role
+									option(value="#{op_id}") #{op_name}
+					.control-group
+						.controls
+							button(type="submit",name="add_user").
+								添加新用户
+	each city in cities
+		input(type="hidden", name="city_hidden", city_no="#{city.no}", city_name="#{city.name}", province_no="#{city.province_no}")

@@ -1,12 +1,9 @@
-doctype 5
-html
-	head
-		title= title
-		include misc/header
+extends layout
 
-	body
-		div.margintop145.row
-			div.span6.offset5
-				include login_form
-		include misc/content_footer
-
+block content
+	.container
+		.row
+			.span3
+				include misc/left
+			.span6
+				| hello, index

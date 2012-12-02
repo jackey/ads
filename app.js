@@ -4,8 +4,8 @@
  */
 
 var express = require('express')
+  , MongoStore = require('express-session-mongo')
   , routes = require('./routes')
-  // , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , config = require('./config');
@@ -20,9 +20,12 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser('your secret here'));
-  app.use(express.session());
-  // app.use(app.router);
+  app.use(express.cookieParser('ad_xx_ad_xx_ad'));
+  app.use(express.session({
+    secret: "secret_session", 
+    store: new MongoStore(config.session.db, config.session.ip, config.session.port)})
+  );
+  app.use(require('./lib/middleware'));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.static(path.join(__dirname, '.')));
 });
@@ -45,8 +48,6 @@ for (var path in config.post) {
   app.post("/" + path, loaded_control);
 }
 
-// app.get('/', routes.index);
-// app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

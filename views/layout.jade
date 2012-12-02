@@ -1,3 +1,8 @@
+mixin l(path, name)
+	if path == current_path
+		a.active(href= path)= name
+	else
+		a(href= path)= name
 doctype 5
 html
 	head

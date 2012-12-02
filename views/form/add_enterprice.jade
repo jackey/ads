@@ -1,0 +1,25 @@
+form.form-horizontal#add_enterprice_form(action="/add_enterprice", method="POST")
+	.control-group
+		label.control-label 企业厂商: 
+			span.text-red *
+		.controls
+			input.easyui-validatebox(name="name", placeholder="名字", required="required")
+	.control-group
+		label.control-label Email:
+			span.text-red *
+		.controls
+			input.easyui-validatebox(name="email", placeholder="mail@mail.com", required="required", validType="email")
+	.control-group
+		label.control-label 手机号码
+			span.text-red *
+		.controls
+			input.easyui-validatebox(name="phone", placeholder="15821121753", required="required", validType="phone")
+	.control-group
+		label.control-label 厂商自动编码:
+			span.text-red *
+		.controls
+			input(readonly="readonly", name="code", value="#{code}", required="true")
+	include location
+	.control-group
+		.controls
+			button(type="submit", class="btn btn-primary")提交

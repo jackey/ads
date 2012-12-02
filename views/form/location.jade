@@ -1,0 +1,11 @@
+.control-group
+	label.control-label
+		省市
+	.controls
+		select.input-small(name="province", id="province_option")
+			each province in provinces
+				option(value="#{province.no}")
+					| #{province.name}
+		select.input-small(name="city", id="city_option")
+		each city in cities
+			input(type="hidden", name="city_hidden", city_no="#{city.no}", city_name="#{city.name}", province_no="#{city.province_no}")

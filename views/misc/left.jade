@@ -1,9 +1,26 @@
 ul.nav.nav-list
+	li.nav-header 管理首页
 	li
-		a(href="#", title="hello") 管理首页
-		a(href="#", title="Add ad") 添加广告
-		a(href="#", title="") 我的广告
-		a(href="#", title="#") 统计数据
-		a(href="#", title="") 我的账户
-		a(href="/add_user", title="") 添加账户
-		a(href="/logout", title) 登出系统
+		mixin l("/", "首页")
+	li.nav-header 合作厂商
+	li
+		mixin l("/list_enterprice", "合作厂商")
+	li
+		mixin l("/add_enterprice", "添加合作厂商")
+	li.nav-header 经销商
+	li
+		mixin l("/list_dealer", "经销商列表")
+	li
+		mixin l("/add_dealer", "添加经销商")
+	li.nav-header 系统账户
+	li
+		mixin l("/list_admin_user", "管理员")
+	li
+		mixin l("/list_op_user", "操作人员")
+	li
+		mixin l("/add_op_user", "添加操作员")
+	li.nav-header 广告管理
+	li
+		mixin l("/list_ads", "广告列表")
+	li
+		mixin l("/add_ads", "添加广告")

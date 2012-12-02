@@ -1,0 +1,23 @@
+extend layout
+
+block content
+	.container
+		.row
+			.span3
+				include misc/left
+			.span9
+				table.easyui-datagrid#enterprice_list(
+					url="#",
+					title="#{table_title}",
+					iconCls= "icon-save",
+					rowNumbers= "true",
+					pagination= "true"
+				)
+					thead
+						tr
+							th(field="code") 厂家代码
+							th(field="name") 厂家名字
+							th(field="phone") 联系电话
+							th(field="email") Email
+							th(field="province_name") 省
+							th(field="city_name")市

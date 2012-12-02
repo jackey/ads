@@ -1,21 +1,17 @@
-form.form-horizontal.login-form(id="loginform")
-  .control-group
-    label.control-label(for="username")
-      用户名
-    .controls
-      input(type="text"
-        name="username" 
-        id="username"
-        placehoder="您的用户名")
-  .control-group
-    label.control-label(for="password")
-      密码
-    .controls
-      input(
-        type="password" 
-        name="password"
-        id="password")
-  .control-group
-    .controls
-      input.btn.submit.btn_sub(type="submit", id="login_form")
-        登陆
+form#login-form(action="user_login", method="post")
+  table
+    tr
+      td
+        | 用户名:
+      td
+        input(name="username", type="text", required="true")
+    tr
+      td
+        | 密码
+      td
+        input(name="password", type="password", required="true")
+    tr
+      td
+      td
+        button.btn.btn-primary(type="submit", value="登录")
+          |登录
