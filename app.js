@@ -8,9 +8,10 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , config = require('./config');
+  , config = require('./config')
+  , middleware = require('./lib/middleware');
 
-var app = express();
+var app = express(); 
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -25,9 +26,9 @@ app.configure(function(){
     secret: "secret_session", 
     store: new MongoStore(config.session.db, config.session.ip, config.session.port)})
   );
-  app.use(require('./lib/middleware'));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.static(path.join(__dirname, '.')));
+  app.use(middleware);
 });
 
 app.configure('development', function(){
@@ -37,18 +38,20 @@ app.configure('development', function(){
 // Get.
 for (var path in config.routes) {
   var controller = config.routes[path];
-  var loaded_control = require("./routes/"+controller);
+  var loaded_control = require("./routes/"+controller['handler']);
   app.get("/"+path, loaded_control);
 }
 
 // Post.
 for (var path in config.post) {
   var controller = config.post[path];
-  var loaded_control = require('./routes/' + controller);
+  var loaded_control = require('./routes/' + controller['handler']);
   app.post("/" + path, loaded_control);
 }
 
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+http.createServer(app).listen(config.port, function(){
+  console.log("Express server listening on port " + config.port);
 });
+
+module.exports.app = app;

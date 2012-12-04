@@ -8,11 +8,11 @@
 
  // Router handler.
  module.exports = function (req, res) {
- 	if (_.isUndefined(req.user)) {
- 		console.log('hello');
- 		console.log(req.user);
+ 	//如果用户已经登录，则重定向到首页
+ 	if (req.user.username) {
+ 		res.redirect('/index');
  	}
- 	if (_.isUndefined(req.body) || _.isEmpty(req.body)) {
+ 	else if (utility.isGet(req)) {
  		res.render('login', {title: '广告系统 | 用户登陆'});
  	}
  	else {

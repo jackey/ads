@@ -1,21 +1,13 @@
-// User Model.
-
-//用户角色是固定的
-global.ENTERPRISE_ROLE = 1; // 合作厂家
-global.DEALER_ROLE = 2; //经销商 
-global.SELF_COMPANY_ROLE = 3; //本公司
-global.ADMINISTRATOR = 4; // 管理员
-global.OP = 5; //操作员
-
+// User Model
 
 var mongoose = require('mongoose'),
-	_ = require('underscore');
+	_ = require('underscore'),
+	Step = require('step');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 
 var User = new Schema({
-	uid: ObjectId,
 	username: {
 		type: String,
 		required: true
@@ -34,14 +26,6 @@ var User = new Schema({
 		required: true,
 		default: Date.now
 	},
-	type_role: {
-		type: Number,
-		required: true,
-	},
-	op_role: {
-		type: Number,
-		required: true,
-	},
 	province_id: {
 		type: Number,
 		required: true,
@@ -49,6 +33,10 @@ var User = new Schema({
 	city_id: {
 		type: Number,
 		required: true
+	},
+	roles: {
+		type: Array,
+		require: false,
 	}
 });
 
@@ -59,6 +47,61 @@ User.statics.getUserByName = function (name, cb) {
 	else {
 		this.find({username: name}, cb);
 	}
+}
+
+User.statics.userPermissions = function (name, cb) {
+	this.find({username: name}, function (err, data) {
+		if (err) {
+			// ignore
+			throw err;
+		}
+		else {
+			var roles = data.roles;
+		}
+	})
+}
+
+User.statics.userAccess = function (username, permissions, cb) {
+	this.find({username: username}, function(err, data) {
+		if (err){
+			throw err;
+		}
+		else {
+			var user = _.first(data);
+			if (_.isUndefined(user)) {
+				var roles = ["anonymous"];
+			}
+			else {
+				var roles = user.roles;
+			}
+			Step(function() {
+				var self = this;
+				_.each(roles, function(role) {
+					var role_permissions = require('../model').load('Role').getPermissions(role, self.parallel());
+				});
+			}, function (err, data) {
+				var args = Array.prototype.slice.call(arguments);
+				if (args[0]) {
+					throw args[0];
+				}
+				else {
+					var role_permissions = args.slice(1);
+					var _role_permissions = [];
+					_.each(role_permissions, function (role_permission) {
+						_role_permissions = _.union(role_permission, _role_permissions);
+					});
+					role_permissions = _role_permissions;
+					var diffence_permisssions = _.difference(role_permissions, permissions);
+					if (diffence_permisssions.length == role_permissions.length && _.indexOf(permissions, "all_time") == -1) {
+						cb(false);
+					}
+					else {
+						cb(true);
+					}
+				}
+			});
+		}
+	})
 }
 
 module.exports = function (connect) {
